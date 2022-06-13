@@ -1,0 +1,7 @@
+.hidden-card {
+    display: none !important;
+}
+
+.show-card {
+    display: flex !important;
+}

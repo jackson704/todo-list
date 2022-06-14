@@ -2,10 +2,11 @@ import React, { useState, useContext } from "react";
 import { Button, Container, Col, Form, Row } from "react-bootstrap";
 import AllContent from "./AllContent";
 import CardContext from "../context/cardContext";
+ 
 
 const MainForm = (props) => {
-  const { addTodos, inputFieldsBlank, editTodos } = useContext(CardContext);
-
+  const { addTodos, inputFieldsBlank, editTodos, inputFieldsUpdate } =
+    useContext(CardContext); 
   // const [addMyTodos, setAddMyTodos] = useState([])
   let random = Math.random();
 
@@ -26,11 +27,17 @@ const MainForm = (props) => {
       ...inputFields,
       [e.target.name]: e.target.value,
     });
-
   };
 
   let handleUpdateTodo = (e) => {
-    e.preventDefault();
+    setInputFields({
+      ...inputFields,
+      name: inputFieldsBlank.name,
+      email: inputFieldsBlank.email,
+      mobile: inputFieldsBlank.mobile,
+      desc: inputFieldsBlank.desc,
+    });
+
     editTodos(
       inputFields.name,
       inputFields.email,
@@ -38,14 +45,10 @@ const MainForm = (props) => {
       inputFields.desc,
       (inputFields.id = uId)
     );
-
-    setInputFields({
-      // ...inputFields
-      name: inputFieldsBlank.name,
-      email: inputFieldsBlank.email,
-      mobile: inputFieldsBlank.mobile,
-      desc: inputFieldsBlank.desc,
-    });
+    
+    e.preventDefault();
+    // location.hash = "/";
+    console.log("update called");
   };
 
   let handleClick = (e) => {
@@ -67,7 +70,7 @@ const MainForm = (props) => {
       mobile: inputFieldsBlank.mobile,
       desc: inputFieldsBlank.desc,
     });
-    console.log(inputFields);
+    // console.log(inputFields);
   };
 
   return (
@@ -79,12 +82,12 @@ const MainForm = (props) => {
               <Form.Group className="mb-3">
                 <Form.Label className="form-label">Enter Name</Form.Label>
                 <Form.Control
-                  onChange={onChange}
                   name="name"
                   type="text"
                   placeholder="Name"
                   id="name"
-                  value={inputFields.name}
+                  value={inputFields.name || inputFieldsUpdate.name}
+                  onChange={onChange}
                 />
               </Form.Group>
             </Col>
@@ -97,7 +100,7 @@ const MainForm = (props) => {
                   type="email"
                   placeholder="Email"
                   id="email"
-                  value={inputFields.email}
+                  value={inputFields.email || inputFieldsUpdate.email}
                 />
                 <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
@@ -113,7 +116,7 @@ const MainForm = (props) => {
                   type="tel"
                   placeholder="Mobile"
                   id="mobile"
-                  value={inputFields.mobile}
+                  value={inputFields.mobile || inputFieldsUpdate.mobile}
                 />
               </Form.Group>
             </Col>
@@ -126,7 +129,7 @@ const MainForm = (props) => {
               as="textarea"
               rows={3}
               id="description"
-              value={inputFields.desc}
+              value={inputFields.desc || inputFieldsUpdate.desc}
             />
           </Form.Group>
 

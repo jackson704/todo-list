@@ -12,6 +12,13 @@ const CardState = (props) => {
     _uId: "",
   });
 
+  const [myUpdate, setMyUpdate] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    desc: "",
+  });
+
   const [inputFieldsBlank, setInputFieldsBlank] = useState({
     id: 0,
     name: "",
@@ -30,14 +37,6 @@ const CardState = (props) => {
       desc: desc,
     };
 
-    // setInputFieldsUpdate({
-    //   ...todoNotesMain,
-    //   name: todoNotesMain.name,
-    //   email: todoNotesMain.email,
-    //   mobile: todoNotesMain.mobile,
-    //   desc: todoNotesMain.desc,
-    // });
-
     if (
       todoNotesMain._id ||
       todoNotesMain.name ||
@@ -53,7 +52,7 @@ const CardState = (props) => {
         mobile: "",
         desc: "",
       });
-      console.log(id);
+      // console.log(id);
     } else {
       alert("Please Fill All & After Add Todo");
       console.log("error");
@@ -62,7 +61,7 @@ const CardState = (props) => {
 
   // Delete Todos
   let deleteTodos = (id) => {
-    // console.log(`Deleting todos ${id}`);
+    // console.log(`Deleti ng todos ${id}`);
     let newTodos = todoList.filter((newTodo) => {
       return newTodo._id !== id;
     });
@@ -70,22 +69,40 @@ const CardState = (props) => {
   };
   // Edit Todos
   let editTodos = (name, email, mobile, desc, id) => {
-    console.log("edit todos");
-    console.log(`The name is ${name} `);
-    console.log(`The id is ${id} `);
+    // console.log("edit todos");
+    // console.log(`The name is ${name} `);
+    // console.log(`The id is ${id} `);
 
     window.location.href = "#my-form";
     setInputFieldsUpdate({
-      // ...inputFieldsUpdate,
+      ...inputFieldsUpdate,
       name: name,
       email: email,
       mobile: mobile,
       desc: desc,
       _uId: id,
     });
-    // let updateTodo = todoList.map((value)=>{
-    //     console.log(value);
-    // })
+    // console.log(inputFieldsUpdate.name);
+
+    // console.log(name);
+    // let updateTodo =  todoList.map((value) => {
+    //   console.log((value.name = inputFieldsUpdate.name));
+    // });
+    todoList.filter((value) => {
+      //  value.name = inputFieldsUpdate.name
+      console.log(value._id);
+      if(value.name !== inputFieldsUpdate.name){
+        setMyUpdate({
+          ...myUpdate,
+          name: inputFieldsUpdate.name,
+          email: inputFieldsUpdate.email,
+          mobile: inputFieldsUpdate.mobile,
+          desc: inputFieldsUpdate.desc,
+        });
+      }
+
+    });
+    // console.log( updateTodo)
 
     // console.log(inputFields.name);
   };
@@ -123,6 +140,7 @@ const CardState = (props) => {
     searchTodos,
     editTodos,
     inputFieldsUpdate,
+    myUpdate
   };
   return (
     <div>

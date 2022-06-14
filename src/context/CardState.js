@@ -53,7 +53,7 @@ const CardState = (props) => {
         desc: "",
       });
       // console.log(id);
-    } else {
+    } else { 
       alert("Please Fill All & After Add Todo");
       console.log("error");
     }

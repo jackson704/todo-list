@@ -81,7 +81,13 @@ const ContentTable = (props) => {
               variant="success"
               // Update Todos edit
               onClick={() => {
-                editTodos(name, email, email, desc, _id);
+                editTodos(
+                  (inputFieldsUpdate.name = name),
+                  (inputFieldsUpdate.email = email),
+                  (inputFieldsUpdate.mobile = email),
+                  (inputFieldsUpdate.desc = desc),
+                  _id
+                );
               }}
             >
               <HiPencilAlt className="text-lg-center" />

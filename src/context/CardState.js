@@ -1,61 +1,54 @@
+// eslint-disable-next-line
+
 import React, { useState } from "react";
 import CardContext from "./cardContext";
 
+// REACT TOASTIFY
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const CardState = (props) => {
   const [todoList, setTodoList] = useState([]);
-
-  const [inputFieldsUpdate, setInputFieldsUpdate] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    desc: "",
-    _uId: "",
+  const [todo, setTodo] = useState({});
+  const [buttonProperty, setButtonProperty] = useState({
+    title: "My Todos",
+    buttonName: "Add Todo",
+    backgroundColor: "primary",
   });
 
-  const [myUpdate, setMyUpdate] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    desc: "",
-  });
-
-  const [inputFieldsBlank, setInputFieldsBlank] = useState({
-    id: 0,
-    name: "",
-    email: "",
-    mobile: "",
-    desc: "",
-  });
+  let random = Math.random();
+  let d = random.toPrecision();
+  let uniq_id = d.substr(2);
 
   // Adding Todos
-  let addTodos = (id, name, email, mobile, desc) => {
-    let todoNotesMain = {
-      _id: id,
-      name: name,
-      email: email,
-      mobile: mobile,
-      desc: desc,
-    };
-
-    if (
-      todoNotesMain._id ||
-      todoNotesMain.name ||
-      todoNotesMain.email ||
-      todoNotesMain.mobile ||
-      todoNotesMain.desc !== ""
-    ) {
-      setTodoList(todoList.concat(todoNotesMain));
-      setInputFieldsBlank({
-        // ...inputFieldsBlank,
-        name: "",
-        email: "",
-        mobile: "",
-        desc: "",
+  let addAndUpdateTodo = () => {
+    if (todo.id) {
+      // Update TodoList
+      const tempRecords = todoList.map((t) => (t.id === todo.id ? todo : t));
+      setTodoList(tempRecords);
+      setTodo({});
+      setButtonProperty({
+        title: "My Todos",
+        buttonName: "Add Todo",
+        backgroundColor: "primary",
       });
-      // console.log(id);
-    } else { 
-      alert("Please Fill All & After Add Todo");
-      console.log("error");
+      toast("Todo Updated Successfully!");
+    } else {
+      // Add TodoList
+      const temp = { ...todo, id: uniq_id };
+      console.log(temp);
+
+      if (
+        todo.name !== "" &&
+        todo.email !== "" &&
+        todo.mobile !== "" &&
+        todo.desc !== ""
+      ) {
+        setTodoList([temp, ...todoList]);
+        setTodo({});
+
+        toast("Todo Added Successfully!");
+      }
     }
   };
 
@@ -63,84 +56,20 @@ const CardState = (props) => {
   let deleteTodos = (id) => {
     // console.log(`Deleti ng todos ${id}`);
     let newTodos = todoList.filter((newTodo) => {
-      return newTodo._id !== id;
+      return newTodo.id !== id;
     });
     setTodoList(newTodos);
-  };
-  // Edit Todos
-  let editTodos = (name, email, mobile, desc, id) => {
-    // console.log("edit todos");
-    // console.log(`The name is ${name} `);
-    // console.log(`The id is ${id} `);
-
-    window.location.href = "#my-form";
-    setInputFieldsUpdate({
-      ...inputFieldsUpdate,
-      name: name,
-      email: email,
-      mobile: mobile,
-      desc: desc,
-      _uId: id,
-    });
-    // console.log(inputFieldsUpdate.name);
-
-    // console.log(name);
-    // let updateTodo =  todoList.map((value) => {
-    //   console.log((value.name = inputFieldsUpdate.name));
-    // });
-    todoList.filter((value) => {
-      //  value.name = inputFieldsUpdate.name
-      console.log(value._id);
-      if(value.name !== inputFieldsUpdate.name){
-        setMyUpdate({
-          ...myUpdate,
-          name: inputFieldsUpdate.name,
-          email: inputFieldsUpdate.email,
-          mobile: inputFieldsUpdate.mobile,
-          desc: inputFieldsUpdate.desc,
-        });
-      }
-
-    });
-    // console.log( updateTodo)
-
-    // console.log(inputFields.name);
-  };
-
-  // Search Todos
-  let searchTodos = (id, name) => {
-    console.log(name);
-
-    console.log(todoList.length);
-
-    let filterAllTodos = todoList.filter((filter) => {
-      console.log(filter._id, id);
-      console.log(filter.name, name, name.length);
-      return filter.name !== name;
-      // if (filter.name !== name && filter._id !== id) {
-
-      //     return (filter.name && filter._id);
-      // }
-      // return (filter.name === name);
-    });
-    // let values = filterAllTodos.filter((value) => {
-    //     console.log(value);
-    //     return value;
-    // })
-    setTodoList(filterAllTodos);
-    // })
-    console.log(filterAllTodos);
+    setTodo({})
   };
 
   const allTodos = {
     todoList,
-    inputFieldsBlank,
-    addTodos,
+    todo,
+    buttonProperty,
+    setButtonProperty,
+    setTodo,
+    addAndUpdateTodo,
     deleteTodos,
-    searchTodos,
-    editTodos,
-    inputFieldsUpdate,
-    myUpdate
   };
   return (
     <div>

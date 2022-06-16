@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+
 import React, { useContext } from 'react'
 // import ContentTable from './ContentTable'
 import CardContext from '../context/cardContext'

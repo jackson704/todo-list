@@ -1,76 +1,27 @@
-import React, { useState, useContext } from "react";
+// eslint-disable-next-line
+
+import React, { useContext } from "react";
 import { Button, Container, Col, Form, Row } from "react-bootstrap";
 import AllContent from "./AllContent";
 import CardContext from "../context/cardContext";
- 
 
-const MainForm = (props) => {
-  const { addTodos, inputFieldsBlank, editTodos, inputFieldsUpdate } =
-    useContext(CardContext); 
-  // const [addMyTodos, setAddMyTodos] = useState([])
-  let random = Math.random();
-
-  let d = random.toPrecision();
-  let uId = d.substr(2);
-  const [inputFields, setInputFields] = useState({
-    id: "",
-    name: "",
-    email: "",
-    mobile: "",
-    desc: "",
-  });
-
-  // console.log(blankInput.name);
+const MainForm = () => {
+  const { addAndUpdateTodo, setTodo, todo, buttonProperty } =
+    useContext(CardContext);
 
   let onChange = (e) => {
-    setInputFields({
-      ...inputFields,
+    setTodo({
+      ...todo,
       [e.target.name]: e.target.value,
     });
   };
 
-  let handleUpdateTodo = (e) => {
-    setInputFields({
-      ...inputFields,
-      name: inputFieldsBlank.name,
-      email: inputFieldsBlank.email,
-      mobile: inputFieldsBlank.mobile,
-      desc: inputFieldsBlank.desc,
-    });
-
-    editTodos(
-      inputFields.name,
-      inputFields.email,
-      inputFields.mobile,
-      inputFields.desc,
-      (inputFields.id = uId)
-    );
-    
-    e.preventDefault();
-    // location.hash = "/";
-    console.log("update called");
-  };
-
   let handleClick = (e) => {
+    // debugger
+
+    addAndUpdateTodo();
+    setTodo({});
     e.preventDefault();
-    // let id_todo = 1;
-
-    addTodos(
-      (inputFields.id = uId),
-      inputFields.name,
-      inputFields.email,
-      inputFields.mobile,
-      inputFields.desc
-    );
-
-    setInputFields({
-      // ...inputFields,
-      name: inputFieldsBlank.name,
-      email: inputFieldsBlank.email,
-      mobile: inputFieldsBlank.mobile,
-      desc: inputFieldsBlank.desc,
-    });
-    // console.log(inputFields);
   };
 
   return (
@@ -86,7 +37,7 @@ const MainForm = (props) => {
                   type="text"
                   placeholder="Name"
                   id="name"
-                  value={inputFields.name || inputFieldsUpdate.name}
+                  value={todo.name || ""}
                   onChange={onChange}
                 />
               </Form.Group>
@@ -100,7 +51,7 @@ const MainForm = (props) => {
                   type="email"
                   placeholder="Email"
                   id="email"
-                  value={inputFields.email || inputFieldsUpdate.email}
+                  value={todo.email || ""}
                 />
                 <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
@@ -116,7 +67,7 @@ const MainForm = (props) => {
                   type="tel"
                   placeholder="Mobile"
                   id="mobile"
-                  value={inputFields.mobile || inputFieldsUpdate.mobile}
+                  value={todo.mobile || ""}
                 />
               </Form.Group>
             </Col>
@@ -129,28 +80,25 @@ const MainForm = (props) => {
               as="textarea"
               rows={3}
               id="description"
-              value={inputFields.desc || inputFieldsUpdate.desc}
+              value={todo.desc || ""}
             />
           </Form.Group>
 
           {
             <>
               <Button
-                variant="primary"
+                variant={
+                  buttonProperty.backgroundColor === "primary"
+                    ? "primary"
+                    : "success"
+                }
                 onClick={handleClick}
                 type="submit"
                 className="my-3"
               >
-                Add Todo
-              </Button>
-              &nbsp;&nbsp;&nbsp;
-              <Button
-                variant="success"
-                onClick={handleUpdateTodo}
-                type="submit"
-                className="my-3"
-              >
-                Now UpdateTodo
+                {buttonProperty && buttonProperty.buttonName === "Add Todo"
+                  ? "Add Todo"
+                  : "Now Update Todo"}
               </Button>
             </>
           }
